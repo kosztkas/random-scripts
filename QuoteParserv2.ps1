@@ -1,4 +1,4 @@
-﻿Function Get-FileName($initialDirectory)
+Function Get-FileName($initialDirectory)
 {
     [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
     
@@ -9,51 +9,51 @@
     $OpenFileDialog.filename
 }
 
-Function Get-SaveFile($initialDirectory)
-{ 
-[System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
+Write-Host "Open your Avnet XML quote" -ForegroundColor Green
 
-    $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
-    $SaveFileDialog.initialDirectory = Split-Path -Path $inputfile
-    $SaveFileDialog.title = "Save File"
-    $SaveFileDialog.filter = "Text Files|*.txt|All Files|*.*" 
-    $SaveFileDialog.ShowDialog() | Out-Null
-    $SaveFileDialog.filename
-}
+$wshell = New-Object -ComObject Wscript.Shell -ErrorAction Stop
 
-Write-Host "Open your Avnet XML quote" -ForegroundColor Green 
+$i = $wshell.Popup("Please open your quote from Avnet",0,"Open please",64+0) 
 
 $inputfile = Get-FileName "~"
 
 $input = [xml](Get-Content -Path $inputfile)
 
-$output = $input.SelectNodes('//EclipseLineItem')| where { $_.Description -ne "Factory integrated" } | select ProductNumber, Quantity, Description | Format-Table -AutoSize
+$input.SelectNodes('//EclipseLineItem')| where { $_.Description -ne "Factory integrated" } | select ProductNumber, Quantity, Description | Out-GridView -Title "Line Items" -Wait
 
-Write-Host $output
+
+$output = $input.SelectNodes('//EclipseLineItem')| where { $_.Description -ne "Factory integrated" } | select ProductNumber, Quantity, Description
+
+#Write-Host $output
 
 if ($inputfile -ne ""){
  
-Write-Host "Save your output?" -ForegroundColor Green  
+#Write-Host "Save your output?" -ForegroundColor Green  
 
 $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Stop
 
-$i = $wshell.Popup("Would you like to save the output?",0,"Save?",32+4)
+$i = $wshell.Popup("Would you like to save the human readable table?",0,"Save?",32+4)
 
 if ($i -eq 6){
-    Get-SaveFile "~"
-    Write-Host "Where would you like to save?" -ForegroundColor Green  
-    $result = $SaveFileDialog.ShowDialog()    
-#    $result 
+    #Write-Host "Where would you like to save?" -ForegroundColor Green  
+    [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") | Out-Null
 
-    if($result -eq "OK")    {    
-            Write-Host "Selected File and Location:"  -ForegroundColor Green  
-#            $SaveFileDialog.filename   
+    $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
+    $SaveFileDialog.initialDirectory = Split-Path -Path $inputfile
+    $SaveFileDialog.title = "Save File"
+    $SaveFileDialog.filter = "Text Files|*.txt|All Files|*.*" 
+    $j = $SaveFileDialog.ShowDialog() #| Out-Null
+    #$SaveFileDialog.filename
+
+    if( $j -eq "OK")    {    
+           #Write-Host "Selected File and Location:"  -ForegroundColor Green  
+           #$SaveFileDialog.filename   
             echo $output > $SaveFileDialog.filename
         } 
         else { Write-Host "File Save Dialog Cancelled!" -ForegroundColor Yellow}
 }}
 
 
-Write-Host "Press any key to continue ..." -ForegroundColor Green
+#Write-Host "Press any key to continue ..." -ForegroundColor Green
 
-$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+#$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
