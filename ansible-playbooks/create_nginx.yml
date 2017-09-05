@@ -1,0 +1,14 @@
+---
+- hosts: hostname1
+  become: yes
+  tasks:
+  - name: create nginx container
+    docker_container:
+        name: test-nginx
+        image: nginx
+        state: present
+        volumes:
+        - "/var/test-site:/usr/share/nginx/html:ro"
+        ports:
+        - "8080:80"
+        detach: true
