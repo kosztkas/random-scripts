@@ -1,0 +1,13 @@
+ ---
+ - hosts: host1
+   become: yes
+   tasks:
+   - name: create haproxy container
+     docker_container:
+         name: test-haproxy
+         image: haproxy:1.7
+         state: present
+         volumes:
+         - "/var/haproxy:/usr/local/etc/haproxy:ro"
+         network_mode: host
+         detach: true
