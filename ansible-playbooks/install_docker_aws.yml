@@ -1,0 +1,8 @@
+---
+- hosts: aws1
+  become: yes
+  tasks:
+  - name: Update repo cache and install "Docker.io"
+    apt:
+        name: docker.io
+        update_cache: yes

@@ -1,0 +1,7 @@
+---
+- hosts: aws1
+  become: yes
+  tasks:
+  - name: pull nginx image
+    docker_image:
+        name: nginx
