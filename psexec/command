@@ -1,3 +1,3 @@
 REM pipe stdout and stder to a local file
 
-psexec @c:\serverlist.txt -u ts-eu\skosztka -h -c -f command.bat >output.txt 2>&1
+psexec @c:\serverlist.txt -u domain\user -h -c -f command.bat >output.txt 2>&1
