@@ -9,11 +9,11 @@ Function Get-FileName($initialDirectory)
     $OpenFileDialog.filename
 }
 
-Write-Host "Open your Avnet XML quote" -ForegroundColor Green
+Write-Host "Open your XML quote" -ForegroundColor Green
 
 $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Stop
 
-$i = $wshell.Popup("Please open your quote from Avnet",0,"Open please",64+0) 
+$i = $wshell.Popup("Please open your quote",0,"Open please",64+0) 
 
 $inputfile = Get-FileName "~"
 
