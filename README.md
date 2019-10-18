@@ -6,3 +6,4 @@
 * Excel VBA stuff: hiding/showing tabs and rows
 * Mass deploy linux users with bash script -- should use ansible instead?
 * ASCII to text: excel function to convert a list of ascii codes to string ( `[72-105-33] -> Hi!` )
+* Create roles: Create Roles on Alibaba Cloud with python scripts
