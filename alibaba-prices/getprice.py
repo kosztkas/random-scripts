@@ -9,7 +9,7 @@ from aliyunsdkecs.request.v20140526 import DescribePriceRequest
 def getPrice(instanceType, disk='0', unit = 'Month'):
 
     # initialize the client
-    client = AcsClient( 'LTAIt7dM4K4FMBVW', 'U4rpjzp3qFjWdwcEGlcXIiXPQvKmXy','eu-central-1' )
+    client = AcsClient( 'key', 'secret','eu-central-1' )
 
     # Create a request and set parameters
     request = DescribePriceRequest.DescribePriceRequest()
