@@ -1,0 +1,17 @@
+g5, general-purpose type family
+sn2ne, general-purpose type family with enhanced network performance
+ic5, intensive compute instance type family
+c5, compute instance type family
+sn1ne, compute optimized type family with enhanced network performance
+r5, memory instance type family
+re4, memory optimized type family with enhanced performance
+se1ne, memory optimized type family with enhanced network performance
+se1, memory optimized type family
+d1ne, big data type family with enhanced network performance
+d1, big data type family
+i2, type family with local SSD disks
+i1, type family with local SSD disks
+hfc5, compute optimized type family with high clock speed
+hfg5, general-purpose type family with high clock speed
+ce4, compute optimized type family with high clock speed
+t5, burstable instances
