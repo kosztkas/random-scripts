@@ -1,0 +1,18 @@
+REM Title: Powershell WSL setup
+REM Author: kosztkas
+REM Target:  Tested on Windows 11
+REM Version: 1.0
+REM Category: 
+REM Launches Powershell and install wsl and requirement features
+GUI r
+DELAY 500
+STRING powershell
+CTRL-SHIFT ENTER
+DELAY 2000
+REM STRING Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -norestart
+REM ENTER
+STRING Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All -norestart
+ENTER
+DELAY 3000
+STRING Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -norestart
+ENTER
