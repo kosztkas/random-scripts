@@ -7,10 +7,19 @@ aws ec2 describe-instances --query "Reservations[*].Instances[*].{Name:Tags[?Key
 # get volume information, attached to which instance, size, iops, throughput, device name
 aws ec2 describe-volumes --query "Volumes[].{ID:VolumeId,InstanceId:Attachments[0].InstanceId,device:Attachments[0].Device,Size:Size,IOPS:Iops,Throughput:Throughput}" --output table
 
+# list running instances
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId" --output text
+
 # check a list of instances wether they have stop protection enabled
 while read instance; do
-	aws ec2 describe-instance-attribute --attribute disableApiStop --instance-id $instance --query "{ID:InstanceId,stop:DisableApiStop.Value}" --output text
-done < instancelist.txt
+	aws ec2 describe-instance-attribute --attribute disableApiStop --instance-id $instance --query "{ID:InstanceId,stop:DisableApiStop.Value}" --output text >> instance_protection_state.txt
+done < instances.txt
+
+# turn off stop protection 
+while read id; do
+    aws ec2 modify-instance-attribute --instance-id $id --no-disable-api-stop
+    echo "$id stop protection turned off"
+done < protected_instances.txt
 
 # Run a command on linux instances from awscli via SSM
 aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" \
