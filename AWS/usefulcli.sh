@@ -26,3 +26,8 @@ aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1"
 --targets '[{"Key":"InstanceIds","Values":["i-1234567890abcde"]}]' \
 --parameters '{"workingDirectory":[""],"executionTimeout":["3600"],"commands":["echo "hello"]}' \
 --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --region eu-central-1
+
+# get the latest Amazon linux AMI ID
+aws ssm get-parameter --name /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --query 'Parameter.Value' --output text
+# get the latest Ubuntu 22.04 AMI ID
+aws ssm get-parameter --name /aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id  --query 'Parameter.Value' --output text
