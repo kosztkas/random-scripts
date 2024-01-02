@@ -1,6 +1,9 @@
 # Get the instance ID + Name tage in a convenient format
 aws ec2 describe-instances --query "Reservations[*].Instances[*].{ID:InstanceId,Name:Tags[?Key=='Name']|[0].Value}" --output text
 
+# Get the instance Name and public IP
+aws ec2 describe-instances --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,Name:Tags[?Key=='Name']|[0].Value}"
+
 # get a whole lot more information of the EC2 instances
 aws ec2 describe-instances --query "Reservations[*].Instances[*].{Name:Tags[?Key=='Name']|[0].Value,ID:InstanceId,Type:InstanceType,AmiID:ImageId,SubnetID:SubnetId,Monitoring:Monitoring.State,AZ:Placement.AvailabilityZone,SG:SecurityGroups[0].GroupName,SourceDestCheck:SourceDestCheck,autorecovery:MaintenanceOptions.AutoRecovery,PMtag:Tags[?Key=='pacemaker']|[0].Value}" --output table
 
