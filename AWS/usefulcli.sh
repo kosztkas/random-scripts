@@ -31,3 +31,8 @@ aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1"
 aws ssm get-parameter --name /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --query 'Parameter.Value' --output text
 # get the latest Ubuntu 22.04 AMI ID
 aws ssm get-parameter --name /aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id  --query 'Parameter.Value' --output text
+
+# get the list of latest windows images names in the current region
+aws ssm get-parameters-by-path \
+    --path /aws/service/ami-windows-latest \
+    --query 'Parameters[].Name'
