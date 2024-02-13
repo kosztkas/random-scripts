@@ -10,21 +10,23 @@ users=(
     cica
 )
 
-groupadd -g $groupid $groupname
+groupadd -g ${groupid} "${groupname}"
 
-cat << EOF > /etc/sudoers.d/$groupname-users
-## Allows people in group $groupname to run all commands without a password
-%$groupname ALL=(ALL:ALL) NOPASSWD: ALL
+echo "${groupname} created with id ${groupid}"
+
+cat << EOF > /etc/sudoers.d/${groupname}-users
+## Allows people in group ${groupname} to run all commands without a password
+%${groupname} ALL=(ALL:ALL) NOPASSWD: ALL
 EOF
 
 for user in "${users[@]}"; do
 
-    useradd -m --uid $((++uid_base)) -g $groupid $user
+    useradd -m --uid $((++uid_base)) -g ${groupid} "${user}"
 
-    echo "$user is created"
+    echo "${uid_base}:${groupid} ${user} is created"
 
-    mkdir -p /home/$user/.ssh
-    touch /home/$user/.ssh/authorized_keys
+    mkdir -p /home/"${user}/".ssh
+    touch /home/"${user}"/.ssh/authorized_keys
 
-    chown -R $uid_base:$groupid /home/$user/.ssh
+    chown -R ${uid_base}:${groupid} /home/"${user}"/.ssh
 done
