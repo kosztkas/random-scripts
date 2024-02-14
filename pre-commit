@@ -1,0 +1,15 @@
+#!/bin/bash
+
+STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \\\\.sh`
+
+echo "Checking these staged files: ${STAGED_FILES_CMD}"
+
+for file in ${STAGED_FILES_CMD}
+do
+    shellcheck "${file}" || shellcheck -f quiet -S warning "${file}"
+    if [ $? != 0 ]
+    then
+        echo "Fix those errors before commit."
+        exit 1
+    fi
+done
