@@ -1,3 +1,4 @@
+#!/bin/bash
 # Get the instance ID + Name tage in a convenient format
 aws ec2 describe-instances --query "Reservations[*].Instances[*].{ID:InstanceId,Name:Tags[?Key=='Name']|[0].Value}" --output text
 
@@ -15,12 +16,12 @@ aws ec2 describe-instances --filters Name=instance-state-name,Values=running --q
 
 # check a list of instances wether they have stop protection enabled
 while read instance; do
-	aws ec2 describe-instance-attribute --attribute disableApiStop --instance-id $instance --query "{ID:InstanceId,stop:DisableApiStop.Value}" --output text >> instance_protection_state.txt
+	aws ec2 describe-instance-attribute --attribute disableApiStop --instance-id "${instance}" --query "{ID:InstanceId,stop:DisableApiStop.Value}" --output text >> instance_protection_state.txt
 done < instances.txt
 
 # turn off stop protection 
 while read id; do
-    aws ec2 modify-instance-attribute --instance-id $id --no-disable-api-stop
+    aws ec2 modify-instance-attribute --instance-id "${id}" --no-disable-api-stop
     echo "$id stop protection turned off"
 done < protected_instances.txt
 
