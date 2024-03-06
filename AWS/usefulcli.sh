@@ -40,3 +40,5 @@ aws ssm get-parameter --name /aws/service/canonical/ubuntu/server/22.04/stable/c
 aws ssm get-parameters-by-path \
     --path /aws/service/ami-windows-latest \
     --query 'Parameters[].Name'
+
+aws backup describe-protected-resource --resource-arn arn:aws:ec2:eu-central-1:123456789876:volume/vol-01231239cbafbfada --query LastBackupTime
