@@ -42,3 +42,9 @@ aws ssm get-parameters-by-path \
     --query 'Parameters[].Name'
 
 aws backup describe-protected-resource --resource-arn arn:aws:ec2:eu-central-1:123456789876:volume/vol-01231239cbafbfada --query LastBackupTime
+
+# get the list of Critical severity findigs from security hub, grep for the Title and Description only 
+aws securityhub get-findings --filters '{"SeverityLabel":[{"Value": "CRITICAL", "Comparison":"EQUALS"}]}' | grep -A1 Title
+
+# get the list of Critical severity findings from security hub, + awscli query option for Title, Description and Resource ARN, better solution:
+aws securityhub get-findings --filters '{"SeverityLabel":[{"Value": "CRITICAL", "Comparison":"EQUALS"}]}' --query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"
