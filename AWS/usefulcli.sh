@@ -48,3 +48,10 @@ aws securityhub get-findings --filters '{"SeverityLabel":[{"Value": "CRITICAL", 
 
 # get the list of Critical severity findings from security hub, + awscli query option for Title, Description and Resource ARN, better solution:
 aws securityhub get-findings --filters '{"SeverityLabel":[{"Value": "CRITICAL", "Comparison":"EQUALS"}]}' --query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"
+
+# refine the search and filter for active and new findings + reusability parameters
+aws securityhub get-findings \
+    --filters '{"SeverityLabel":[{"Value": "CRITICAL", "Comparison":"EQUALS"}],"RecordState":[{"Value": "ACTIVE", "Comparison":"EQUALS"}],"WorkflowStatus":[{"Value": "NEW", "Comparison":"EQUALS"}]}' \
+    --query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}" \
+    --region eu-west-1 \
+    --output json
