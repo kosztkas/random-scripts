@@ -55,3 +55,13 @@ aws securityhub get-findings \
     --query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}" \
     --region eu-west-1 \
     --output json
+# if there are huge amounts of findings in a particular category that might cause throttling issues (TooManyRequest), filter out that Product
+aws securityhub get-findings \
+	--filters '{
+ 	"SeverityLabel":[{"Value": "HIGH", "Comparison":"EQUALS"}],
+  	"RecordState":[{"Value": "ACTIVE", "Comparison":"EQUALS"}],
+   	"WorkflowStatus":[{"Value": "NEW", "Comparison":"EQUALS"}],
+    	"ProductArn":[{"Value": "arn:aws:securityhub:eu-central-1::product/aws/ssm-patch-manager", "Comparison":"NOT_EQUALS"}]}'\
+ 	--query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"\
+  	--region eu-central-1 \
+   	--output json | grep Title 
