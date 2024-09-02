@@ -55,6 +55,7 @@ aws securityhub get-findings \
     --query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}" \
     --region eu-west-1 \
     --output json
+    
 # if there are huge amounts of findings in a particular category that might cause throttling issues (TooManyRequest), filter out that Product
 aws securityhub get-findings \
 	--filters '{
@@ -65,3 +66,9 @@ aws securityhub get-findings \
  	--query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"\
   	--region eu-central-1 \
    	--output json | grep Title 
+
+# list the name of stacks in cloudformation:
+aws cloudformation list-stacks --query StackSummaries[].StackName
+
+# list the name of the stacks and their drift status
+aws cloudformation list-stacks --query "StackSummaries[].{StackName:StackName, DriftInformation:DriftInformation}"
