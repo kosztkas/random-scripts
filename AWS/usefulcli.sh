@@ -72,3 +72,11 @@ aws cloudformation list-stacks --query StackSummaries[].StackName
 
 # list the name of the stacks and their drift status
 aws cloudformation list-stacks --query "StackSummaries[].{StackName:StackName, DriftInformation:DriftInformation}"
+
+# list only the names of the drifted stacks:
+aws cloudformation list-stacks --query "StackSummaries[].{StackName:StackName, DriftInformation:DriftInformation.StackDriftStatus}" | jq -c '.[] | select( .DriftInformation == "DRIFTED")'.StackName
+
+# get the details of the drifts
+while read name; do
+aws cloudformation describe-stack-resource-drifts --stack-name $name
+done < drifted_stack_names.txt
