@@ -80,3 +80,6 @@ aws cloudformation list-stacks --query "StackSummaries[].{StackName:StackName, D
 while read name; do
 aws cloudformation describe-stack-resource-drifts --stack-name $name
 done < drifted_stack_names.txt
+
+# use the previous command to export to drift details, and use jq to show just the id and the drift details
+cat drift_details.json | jq '.[].[] | .PhysicalResourceId, .PropertyDifferences'
