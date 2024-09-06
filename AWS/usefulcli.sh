@@ -83,3 +83,6 @@ done < drifted_stack_names.txt
 
 # use the previous command to export to drift details, and use jq to show just the id and the drift details
 cat drift_details.json | jq '.[].[] | .PhysicalResourceId, .PropertyDifferences'
+
+# update recovery point lifecycle
+aws backup update-recovery-point-lifecycle --backup-vault-name Default --recovery-point-arn arn:aws:ec2:eu-central-1::image/ami-01bd48e98a5a7f73b --lifecycle DeleteAfterDays=35
