@@ -86,3 +86,7 @@ cat drift_details.json | jq '.[].[] | .PhysicalResourceId, .PropertyDifferences'
 
 # update recovery point lifecycle
 aws backup update-recovery-point-lifecycle --backup-vault-name Default --recovery-point-arn arn:aws:ec2:eu-central-1::image/ami-01bd48e98a5a7f73b --lifecycle DeleteAfterDays=35
+
+
+# create WAFR review workload
+aws wellarchitected create-workload --workload-name WAFR-Review-24Q04 --description "Well Architected Review 2024 Q4" --review-owner sanyi --lenses arn:aws:wellarchitected::aws:lens/wellarchitected --environment PREPRODUCTION --aws-regions eu-central-1
