@@ -56,7 +56,7 @@ aws securityhub get-findings \
     --region eu-west-1 \
     --output json
     
-# if there are huge amounts of findings in a particular category that might cause throttling issues (TooManyRequest), filter out that Product
+# if there are huge amounts of findings in a particular category that might cause throttling issues (TooManyRequest), filter out that Product ie patch manager
 aws securityhub get-findings \
 	--filters '{
  	"SeverityLabel":[{"Value": "HIGH", "Comparison":"EQUALS"}],
@@ -66,6 +66,13 @@ aws securityhub get-findings \
  	--query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"\
   	--region eu-central-1 \
    	--output json | grep Title 
+    
+# or filter out inspector findings (handled separately so now we don't need them)
+aws securityhub get-findings     
+	--filters '{"SeverityLabel":[{"Value": "CRITICAL", "Comparison":"EQUALS"}],"RecordState":[{"Value": "ACTIVE", "Comparison":"EQUALS"}],"WorkflowStatus":[{"Value": "NEW", "Comparison":"EQUALS"}], "ProductArn":[{"Value": "arn:aws:securityhub:eu-central-1::product/aws/inspector", "Comparison":"NOT_EQUALS"}]}'
+ 	--query "Findings[].{Title:Title,Description:Description,Resource:Resources[].Id}"     
+  	--region eu-central-1     
+   	--output json | grep "Title" | wc -l
 
 # list the name of stacks in cloudformation:
 aws cloudformation list-stacks --query StackSummaries[].StackName
