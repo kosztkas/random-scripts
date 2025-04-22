@@ -97,3 +97,11 @@ aws backup update-recovery-point-lifecycle --backup-vault-name Default --recover
 
 # create WAFR review workload
 aws wellarchitected create-workload --workload-name WAFR-Review-24Q04 --description "Well Architected Review 2024 Q4" --review-owner sanyi --lenses arn:aws:wellarchitected::aws:lens/wellarchitected --environment PREPRODUCTION --aws-regions eu-central-1
+
+
+# create an on demand backup job, added idempotency token cause otherwise wouldn't create the same exact job
+aws backup start-copy-job --source-backup-vault-name a-tmpl-prod-bkp-oplz-bkp-vault-daily \ 
+	--recovery-point-arn arn:aws:ec2:eu-central-1::image/ami-00c1c100de0fa0ce0 \
+ 	--destination-backup-vault-arn  arn:aws:backup:eu-central-1:222222222222:backup-vault:a-tmpl-prod-bkp-oplz-bkp-vault-daily 
+  	--iam-role-arn arn:aws:iam::111111111111:role/a-tmpl-prod-rol-bkp-oplz-bkp \
+   	--idempotency-token cica
