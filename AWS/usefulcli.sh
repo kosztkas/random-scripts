@@ -105,3 +105,7 @@ aws backup start-copy-job --source-backup-vault-name a-tmpl-prod-bkp-oplz-bkp-va
  	--destination-backup-vault-arn  arn:aws:backup:eu-central-1:222222222222:backup-vault:a-tmpl-prod-bkp-oplz-bkp-vault-daily 
   	--iam-role-arn arn:aws:iam::111111111111:role/a-tmpl-prod-rol-bkp-oplz-bkp \
    	--idempotency-token cica
+
+# add KMS encryption key to CloudWatch logrgroup after creation
+aws logs associate-kms-key --log-group-name my-little-loggroup --kms-key-id arn:aws:kms:eu-central-1:111111111111:key/ca111111-111a-1c11-c111-1c111d11d1d1
+
