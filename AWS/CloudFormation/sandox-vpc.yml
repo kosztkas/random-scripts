@@ -1,0 +1,73 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create a small vpc with ipv6 cidrs for public subnets
+
+Parameters:
+  VpcNamePrefix:
+    Type: String
+    Description: You can overwrite the default name.
+    Default: sandbox
+
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.0.0/24
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Join ['-', ['vpc', !Ref VpcNamePrefix]]
+
+  VpcIPv6CidrBlock:
+    Type: AWS::EC2::VPCCidrBlock
+    Properties:
+      VpcId: !Ref Vpc
+      AmazonProvidedIpv6CidrBlock: 'true'
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 192.168.0.0/27
+      AvailabilityZone: eu-west-1a
+      Tags:
+        - Key: Name
+          Value: !Join ['-', ['vpc', !Ref VpcNamePrefix, 'private', '1']]
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 192.168.0.32/27
+      AvailabilityZone: eu-west-1b
+      Tags:
+        - Key: Name
+          Value: !Join ['-', ['vpc', !Ref VpcNamePrefix, 'private', '2']]
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    DependsOn: 
+      - VpcIPv6CidrBlock
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 192.168.0.128/27
+      Ipv6CidrBlock: !Select [0, !Cidr [!Select [0, !GetAtt Vpc.Ipv6CidrBlocks], 4, 64]]
+      AssignIpv6AddressOnCreation: true
+      AvailabilityZone: eu-west-1a
+      Tags:
+        - Key: Name
+          Value: !Join ['-', ['vpc', !Ref VpcNamePrefix, 'public', '1']]
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    DependsOn: 
+      - VpcIPv6CidrBlock
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 192.168.0.160/27
+      Ipv6CidrBlock: !Select [1, !Cidr [!Select [0, !GetAtt Vpc.Ipv6CidrBlocks], 4, 64]]
+      AssignIpv6AddressOnCreation: true
+      AvailabilityZone: eu-west-1b
+      Tags:
+        - Key: Name
+          Value: !Join ['-', ['vpc', !Ref VpcNamePrefix, 'public', '2']]
