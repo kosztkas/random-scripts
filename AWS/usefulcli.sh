@@ -116,3 +116,8 @@ aws acm-pca get-certificate --certificate-authority-arn arn:aws:acm-pca:eu-centr
 
 #list the services available on the given VPC Lattice service network
 aws vpc-lattice list-service-network-service-associations --service-network-identifier sn-11111111111111111
+
+#search for services with parts of a specific custom domain, result only arn, lattice domain name, custom domain name
+aws vpc-lattice list-service-network-service-associations \
+--service-network-identifier sn-11111111111111111 \
+--query "items[?contains(customDomainName || '', '.example.com')].[serviceArn, dnsEntry.domainName, customDomainName]"
