@@ -112,3 +112,7 @@ aws logs associate-kms-key --log-group-name my-little-loggroup --kms-key-id arn:
 # sign CSR with AWS Private Cert Authority - this will issue the cert and return with the ARN, the next command needs this ARN
 aws acm-pca issue-certificate --certificate-authority-arn arn:aws:acm-pca:eu-central-1:1111111111:certificate-authority/ca111111-111a-1c11-c111-1c111d11d1d1 --csr fileb://cert-sign-request.csr --signing-algorithm "SHA256WITHRSA" --validity Value=365,Type="DAYS"
 aws acm-pca get-certificate --certificate-authority-arn arn:aws:acm-pca:eu-central-1:1111111111:certificate-authority/ca111111-111a-1c11-c111-1c111d11d1d1 --certificate-arn arn:aws:acm-pca:eu-central-1:1111111111:certificate-authority/ca111111-111a-1c11-c111-1c111d11d1d1/certificate/12a34b5678c9def8e7654d3c21b2a543
+
+
+#list the services available on the given VPC Lattice service network
+aws vpc-lattice list-service-network-service-associations --service-network-identifier sn-11111111111111111
